@@ -1,5 +1,6 @@
 package com.example.volleydemo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,11 +12,14 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.volleydemo.Constants.BASE_URL
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(),RcvAdapter.MyOnClickListener {
 
-    private val BASE_URL = "http://192.168.0.32/demoAPIs/"
+
+    private lateinit var fab:FloatingActionButton
     private lateinit var swipeRefreshLayout:SwipeRefreshLayout
     private lateinit var rcv:RecyclerView
     private var list:ArrayList<UserModel> = ArrayList()
@@ -25,6 +29,9 @@ class MainActivity : AppCompatActivity(),RcvAdapter.MyOnClickListener {
         setContentView(R.layout.activity_main)
         initView()
         getData()
+        fab.setOnClickListener {
+            startActivity(Intent(this,SubmitActivity::class.java))
+        }
         rcv.apply {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = rcvAdapter
@@ -44,6 +51,7 @@ class MainActivity : AppCompatActivity(),RcvAdapter.MyOnClickListener {
         val requestQueue = Volley.newRequestQueue(this)
         val stringRequest = StringRequest(Request.Method.GET, url,
             Response.Listener { response ->
+                list.clear()
                 val jsonObject = JSONObject(response)
                 if (jsonObject.get("response").equals("Success")){
                     val jsonArray = jsonObject.getJSONArray("data")
@@ -56,6 +64,7 @@ class MainActivity : AppCompatActivity(),RcvAdapter.MyOnClickListener {
                         val user = UserModel(id,name,email, password)
                         list.add(user)
                     }
+                    rcvAdapter.notifyDataSetChanged()
                 }else{
                     Toast.makeText(this,jsonObject.get("response").toString(),Toast.LENGTH_SHORT).show()
                 }
@@ -67,6 +76,7 @@ class MainActivity : AppCompatActivity(),RcvAdapter.MyOnClickListener {
     }
 
     private fun initView() {
+        fab = findViewById(R.id.fab)
         swipeRefreshLayout = findViewById(R.id.swipeRefresh)
         rcv = findViewById(R.id.rcv)
     }
