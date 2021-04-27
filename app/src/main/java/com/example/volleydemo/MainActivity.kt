@@ -43,7 +43,8 @@ class MainActivity : AppCompatActivity(),RcvAdapter.MyOnClickListener {
     }
 
     override fun OnClick(position: Int) {
-        Toast.makeText(this,list[position].email,Toast.LENGTH_SHORT).show()
+        startActivity(Intent(this,UpdateActivity::class.java).putExtra("id",list[position].id))
+        //Toast.makeText(this,list[position].id,Toast.LENGTH_SHORT).show()
     }
 
     private fun getData() {

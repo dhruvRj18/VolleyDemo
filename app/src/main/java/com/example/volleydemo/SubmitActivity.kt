@@ -29,7 +29,6 @@ class SubmitActivity : AppCompatActivity() {
             val password = passwordEd.text.toString()
             submitData(name,email,password)
         }
-
     }
 
     private fun submitData(name: String, email: String, password: String) {

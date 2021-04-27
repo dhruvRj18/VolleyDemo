@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.VolleyDemo"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SubmitActivity"></activity>
+        <activity android:name=".UpdateActivity"></activity>
+        <activity android:name=".SubmitActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
